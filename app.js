@@ -19,6 +19,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 const AuthorSchema = new mongoose.Schema({
   name: { type: String, required: true },
   birthday: { type: Date, required: true },
+  nationality: {type: String , enum: ['Armenian', 'US'], default: 'Armenian'},
 });
 
 const Author = mongoose.model('Author', AuthorSchema);
@@ -33,8 +34,8 @@ const Book = mongoose.model('Book', BookSchema);
 
 app.post('/authors', async (req, res) => {
   try {
-    const { name, birthday } = req.body;
-    const author = new Author({ name, birthday });
+    const { name, birthday, nationality } = req.body;
+    const author = new Author({ name, birthday, nationality });
     await author.save();
     res.status(201).json(author);
   } catch (err) {
